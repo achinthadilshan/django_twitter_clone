@@ -1,4 +1,6 @@
-<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+<nav
+  class="navbar sticky-top navbar-expand-lg bg-body-tertiary"
+  data-bs-theme="dark">
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">Twitter</a>
     <button
@@ -16,6 +18,13 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile_list' %}">Profile List</a>
         </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' request.user.id %}"
+            >My Profile</a
+          >
+        </li>
+        {% endif %}
       </ul>
       <form class="d-flex" role="search">
         <input
