@@ -4,6 +4,14 @@
   <div class="col-md-8">
     <h1 class="text-muted m-0">{{profile.user.username}}'s Profile</h1>
     <p>@{{profile.user.username|lower}}</p>
+    <form method="post">
+      {% csrf_token %}
+      {% if profile in user.profile.follows.all %}
+      <button type="submit" class="btn btn-outline-secondary" name="follow" value="unfollow">Unfollow @{{profile.user.username|lower}}</button>
+      {% else %}
+      <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow @{{profile.user.username|lower}}</button>
+      {% endif %}
+    </form>
     <hr />
   </div>
   <div class="col-md-4">
