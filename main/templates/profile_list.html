@@ -7,7 +7,7 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4">
   {% for profile in profiles %}
   <div class="col">
-    <div class="card shadow-sm border border-light-subtle">
+    <div class="card text-bg-light border border-light-subtle">
       <div class="card-body">
         <div class="d-flex gap-3">
           <img
@@ -18,7 +18,7 @@
           <div>
             <h5 class="card-title m-0">{{profile.user.username}}</h5>
             <p class="card-text">
-              <a href="{% url 'profile' profile.user.id %}">@{{profile.user.username|lower}}</a>
+              <a class="stretched-link" href="{% url 'profile' profile.user.id %}">@{{profile.user.username|lower}}</a>
             </p>
             <p class="card-text m-0">
               <small class="text-body-secondary"

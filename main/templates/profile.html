@@ -5,14 +5,37 @@
     <h1 class="text-muted m-0">{{profile.user.username}}'s Profile</h1>
     <p>@{{profile.user.username|lower}}</p>
     <form method="post">
-      {% csrf_token %}
-      {% if profile in user.profile.follows.all %}
-      <button type="submit" class="btn btn-outline-secondary" name="follow" value="unfollow">Unfollow @{{profile.user.username|lower}}</button>
+      {% csrf_token %} {% if profile in user.profile.follows.all %}
+      <button
+        type="submit"
+        class="btn btn-outline-secondary"
+        name="follow"
+        value="unfollow">
+        Unfollow @{{profile.user.username|lower}}
+      </button>
       {% else %}
-      <button type="submit" class="btn btn-outline-primary" name="follow" value="follow">Follow @{{profile.user.username|lower}}</button>
+      <button
+        type="submit"
+        class="btn btn-outline-primary"
+        name="follow"
+        value="follow">
+        Follow @{{profile.user.username|lower}}
+      </button>
       {% endif %}
     </form>
     <hr />
+
+    {% for tweet in tweets %}
+    <div class="card text-bg-light mb-3 border border-light-subtle">
+      <div class="card-body">
+        <p class="fw-semibold m-0">{{tweet.body}}</p>
+        <small class="text-muted"
+          ><span class="fw-semibold">@{{tweet.user}} - </span
+          >{{tweet.created_at}}</small
+        >
+      </div>
+    </div>
+    {% endfor %}
   </div>
   <div class="col-md-4">
     <div class="card mb-4">

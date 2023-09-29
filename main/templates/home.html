@@ -1,7 +1,15 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
 
-{% block content %}
+<h1 class="text-muted">Tweets</h1>
+<hr />
 
-<h1>Hello world!</h1>
+{% for tweet in tweets %}
+<div class="card text-bg-light mb-3 border border-light-subtle">
+  <div class="card-body">
+    <p class="fw-semibold m-0">{{tweet.body}}</p>
+    <small class="text-muted"><span class="fw-semibold">@{{tweet.user}} - </span>{{tweet.created_at}}</small>
+  </div>
+</div>
+{% endfor %} 
 
 {% endblock %}

@@ -6,7 +6,10 @@ from .models import *
 
 
 def home(request):
-    context = {}
+    if request.user.is_authenticated:
+        tweets = Tweet.objects.all().order_by("-created_at")
+
+    context = {"tweets": tweets}
     return render(request, 'home.html', context)
 
 
@@ -23,6 +26,7 @@ def profile_list(request):
 def profile(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
+        tweets = Tweet.objects.filter(user_id=pk).order_by("-created_at")
 
         # POST form logic
         if request.method == 'POST':
@@ -39,7 +43,7 @@ def profile(request, pk):
             # Save the profile
             current_user_profile.save()
 
-        context = {"profile": profile}
+        context = {"profile": profile, "tweets": tweets}
         return render(request, 'profile.html', context)
     else:
         messages.success(request, ('You must be logged in to view this page!'))

@@ -25,4 +25,7 @@ admin.site.register(User, UserAdmin)
 # admin.site.register(Profile)
 
 # Register your models here.
-admin.site.register(Tweet)
+class TweetAdmin(admin.ModelAdmin):
+     list_display = ['user', 'body', 'created_at']
+
+admin.site.register(Tweet, TweetAdmin)
