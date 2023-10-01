@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %}
+<form method="post" class="row g-3 mx-auto" style="max-width: 600px">
+  {% csrf_token %}
+
+  <div class="col-12">
+    <h2>Register</h2>
+  </div>
+
+  {{form.as_p}}
+
+  <div class="col-12 mt-4">
+    <button type="submit" class="btn btn-dark w-100">Register</button>
+  </div>
+</form>
+{% endblock %}

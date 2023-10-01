@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
-from .forms import TweetForm
+from .forms import *
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
 
 # Create your views here.
 
@@ -88,3 +90,31 @@ def logout_user(request):
     logout(request)
     messages.success(request, ('You have been logged out!'))
     return redirect('home')
+
+
+def register_user(request):
+    form = SignUpForm()
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+
+            # Additional
+            # first_name = form.cleaned_data['first_name']
+            # last_name = form.cleaned_data['last_name']
+            # email = form.cleaned_data['email']
+
+            # login user
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, ('You have successfully registered!'))
+            return redirect('home')
+    else:
+        if request.user.is_authenticated:
+            messages.success(request, ('You\'re already registered!'))
+            return redirect('home')
+        else:
+            context = {"form": form}
+            return render(request, 'register.html', context)
