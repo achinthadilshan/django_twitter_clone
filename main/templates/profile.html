@@ -67,6 +67,16 @@
           </div>
         </div>
         <p class="fw-semibold m-0">{{tweet.body}}</p>
+        <hr>
+        {% if user in tweet.likes.all %}
+        <a href="{% url 'tweet_like' tweet.id %}" class="btn"
+          >{{tweet.number_of_likes}} <i class="bi bi-heart-fill"></i
+        ></a>
+        {% else %}
+        <a href="{% url 'tweet_like' tweet.id %}" class="btn"
+          >{{tweet.number_of_likes}} <i class="bi bi-heart"></i
+        ></a>
+        {% endif %}
       </div>
     </div>
     {% endfor %}

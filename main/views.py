@@ -13,7 +13,6 @@ from django.contrib.auth.models import User
 def home(request):
     if request.user.is_authenticated:
         form = TweetForm(request.POST or None)
-        profile = Profile.objects.all()
         if request.method == "POST":
             if form.is_valid():
                 tweet = form.save(commit=False)
@@ -27,7 +26,7 @@ def home(request):
         return render(request, 'home.html', context)
     else:
         tweets = Tweet.objects.all().order_by("-created_at")
-        context = {"tweets": tweets, "profile": profile}
+        context = {"tweets": tweets}
         return render(request, 'home.html', context)
 
 
@@ -145,5 +144,17 @@ def update_user(request):
             request, ("You must be logged in to view this page!"))
         return redirect('home')
 
+
 def tweet_like(request, pk):
-    tweet = get_object_or_404(Tweet, id=pk)
+    if request.user.is_authenticated:
+        tweet = get_object_or_404(Tweet, id=pk)
+        if tweet.likes.filter(id=request.user.id):
+            tweet.likes.remove(request.user)
+        else:
+            tweet.likes.add(request.user)
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        messages.success(
+            request, ("You must be logged in to view this page!"))
+        return redirect('home')
