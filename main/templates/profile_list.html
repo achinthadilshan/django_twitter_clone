@@ -10,15 +10,27 @@
     <div class="card text-bg-light border border-light-subtle">
       <div class="card-body">
         <div class="d-flex gap-3">
+          {% if profile.profile_image %}
+          <img
+            src="{{profile.profile_image.url}}"
+            style="width: 90px; height: 90px"
+            class="rounded-circle object-fit-cover"
+            alt="profile image" />
+          {% else %}
           <img
             src="{% static 'images/default_profile_pic.png' %}"
             style="width: 90px; height: 90px"
             class="rounded-circle object-fit-cover"
             alt="profile image" />
+          {% endif %}
           <div>
             <h5 class="card-title m-0">{{profile.user.username}}</h5>
             <p class="card-text">
-              <a class="stretched-link" href="{% url 'profile' profile.user.id %}">@{{profile.user.username|lower}}</a>
+              <a
+                class="stretched-link"
+                href="{% url 'profile' profile.user.id %}"
+                >@{{profile.user.username|lower}}</a
+              >
             </p>
             <p class="card-text m-0">
               <small class="text-body-secondary"

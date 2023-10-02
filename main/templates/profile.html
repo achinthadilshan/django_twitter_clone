@@ -1,42 +1,77 @@
-{% extends "base.html" %} {% block content %} {% if profile %}
+{% extends "base.html" %} {% load static %} {% block content %} {% if profile %}
 
 <div class="row">
+
   <div class="col-lg-8">
-    <h1 class="text-muted m-0">{{profile.user.username}}'s Profile</h1>
-    <p>@{{profile.user.username|lower}}</p>
-    <form method="post">
-      {% csrf_token %} {% if profile in user.profile.follows.all %}
-      <button
-        type="submit"
-        class="btn btn-outline-secondary"
-        name="follow"
-        value="unfollow">
-        Unfollow @{{profile.user.username|lower}}
-      </button>
+
+    <div class="d-flex gap-3">
+      {% if profile.profile_image %}
+        <img src="{{profile.profile_image.url}}" alt="" width="125" height="125" class="rounded" />
       {% else %}
-      <button
-        type="submit"
-        class="btn btn-outline-primary"
-        name="follow"
-        value="follow">
-        Follow @{{profile.user.username|lower}}
-      </button>
+        <img src="{% static 'images/default_profile_pic.png' %}" alt="" width="125" height="125" class="rounded" />
       {% endif %}
-    </form>
+      <div class="flex-grow-1">
+        <h1 class="text-muted m-0">{{profile.user.username}}'s Profile</h1>
+        <p>@{{profile.user.username|lower}}</p>
+        <form method="post" class="d-flex justify-content-between">
+          {% csrf_token %} {% if profile in user.profile.follows.all %}
+          <button
+            type="submit"
+            class="btn btn-outline-secondary"
+            name="follow"
+            value="unfollow">
+            Unfollow @{{profile.user.username|lower}}
+          </button>
+          {% else %}
+          <button
+            type="submit"
+            class="btn btn-outline-primary"
+            name="follow"
+            value="follow">
+            Follow @{{profile.user.username|lower}}
+          </button>
+          {% endif %} 
+          
+          {% if request.user.is_authenticated and request.user.id == profile.user.id %}
+          <a href="{% url 'update_user' %}" role="button" class="btn btn-light">
+            <i class="bi bi-gear"></i>
+          </a>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+
     <hr />
 
     {% for tweet in tweets %}
     <div class="card text-bg-light mb-3 border border-light-subtle">
       <div class="card-body">
+        <div class="d-flex gap-3 mb-3">
+          {% if profile.profile_image %}
+          <img
+            src="{{profile.profile_image.url}}"
+            style="width: 35px; height: 35px"
+            class="rounded-circle object-fit-cover"
+            alt="profile image" />
+          {% else %}
+          <img
+            src="{% static 'images/default_profile_pic.png' %}"
+            style="width: 35px; height: 35px"
+            class="rounded-circle object-fit-cover"
+            alt="profile image" />
+          {% endif %}
+
+          <div>
+            <p class="text-muted m-0 fw-bold">@{{tweet.user}}</p>
+            <small class="text-muted">{{tweet.created_at}}</small>
+          </div>
+        </div>
         <p class="fw-semibold m-0">{{tweet.body}}</p>
-        <small class="text-muted"
-          ><span class="fw-semibold">@{{tweet.user}} - </span
-          >{{tweet.created_at}}</small
-        >
       </div>
     </div>
     {% endfor %}
   </div>
+
   <div class="col-lg-4">
     <div class="card mb-4">
       <div class="card-header">
