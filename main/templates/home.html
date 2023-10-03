@@ -39,6 +39,8 @@
           >{{tweet.number_of_likes}} <i class="bi bi-heart"></i
         ></a>
         {% endif %}
+        <a href="{% url 'tweet_view' tweet.id %}" class="btn"
+          >View</a>
       </div>
     </div>
     {% endfor %}

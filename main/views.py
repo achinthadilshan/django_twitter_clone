@@ -67,6 +67,46 @@ def profile(request, pk):
         return redirect('home')
 
 
+def unfollow(request, pk):
+    if request.user.is_authenticated:
+        # Get the profile to unfollow
+        profile = Profile.objects.get(user_id=pk)
+        # Unfollow the user
+        request.user.profile.follows.remove(profile)
+        # Save our profile
+        request.user.profile.save()
+
+        # Return message
+        messages.success(
+            request, (f"You have successfully unfollowed {profile.user.username}!"))
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    else:
+        messages.success(
+            request, ("This action requires logging in!"))
+        return redirect('home')
+
+
+def follow(request, pk):
+    if request.user.is_authenticated:
+        # Get the profile to unfollow
+        profile = Profile.objects.get(user_id=pk)
+        # Unfollow the user
+        request.user.profile.follows.add(profile)
+        # Save our profile
+        request.user.profile.save()
+
+        # Return message
+        messages.success(
+            request, (f"You have successfully followed {profile.user.username}!"))
+        return redirect(request.META.get("HTTP_REFERER"))
+
+    else:
+        messages.success(
+            request, ("This action requires logging in!"))
+        return redirect('home')
+
+
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -157,4 +197,14 @@ def tweet_like(request, pk):
     else:
         messages.success(
             request, ("You must be logged in to view this page!"))
+        return redirect('home')
+
+
+def tweet_view(request, pk):
+    tweet = get_object_or_404(Tweet, id=pk)
+    if tweet:
+        context = {"tweet": tweet}
+        return render(request, 'tweet_view.html', context)
+    else:
+        messages.success(request, ("Tweet does not exist!"))
         return redirect('home')

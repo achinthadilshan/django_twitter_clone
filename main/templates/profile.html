@@ -77,6 +77,8 @@
           >{{tweet.number_of_likes}} <i class="bi bi-heart"></i
         ></a>
         {% endif %}
+        <a href="{% url 'tweet_view' tweet.id %}" class="btn"
+        >View</a>
       </div>
     </div>
     {% endfor %}
@@ -84,17 +86,30 @@
 
   <div class="col-lg-4">
     <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Bio</h5>
+        {% if profile.profile_bio %}
+        <i class="bi bi-person-fill"></i>{{profile.profile_bio}}
+        {% endif %}
+        <br>
+        {% if profile.profile_url %}
+        <i class="bi bi-link-45deg"></i><a href="{{profile.profile_url}}" target="_blank">{{profile.profile_url}}</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card mb-4">
       <div class="card-header">
         <h5 class="card-title">Following</h5>
       </div>
       <div class="card-body">
         <div class="list-group list-group-flush">
           {% for following in profile.follows.all %}
-          <a
-            href="{% url 'profile' following.user.id %}"
-            class="list-group-item link-primary"
-            >@{{following|lower}}</a
-          >
+          <div class="list-group-item link-primary d-flex gap-3">
+            <a href="{% url 'profile' following.user.id %}" class="text-primary" >
+              @{{following|lower}}
+            </a>
+            <a href="{% url 'unfollow' following.user.id %}" class="text-dark"><i class="bi bi-person-dash-fill"></i></a>
+          </div>
           {% endfor %}
         </div>
       </div>
@@ -107,11 +122,16 @@
       <div class="card-body">
         <div class="list-group list-group-flush">
           {% for following in profile.followed_by.all %}
-          <a
-            href="{% url 'profile' following.user.id %}"
-            class="list-group-item link-primary"
-            >@{{following|lower}}</a
-          >
+          <div class="list-group-item link-primary d-flex gap-3">
+            <a href="{% url 'profile' following.user.id %}" class="text-primary" >
+              @{{following|lower}}
+            </a>
+            {% if following in profile.follows.all %}
+            <a href="{% url 'unfollow' following.user.id %}" class="text-dark"><i class="bi bi-person-dash-fill"></i></a>
+            {% else %}
+            <a href="{% url 'follow' following.user.id %}" class="text-dark"><i class="bi bi-person-fill-add"></i></a>
+            {% endif %}
+          </div>
           {% endfor %}
         </div>
       </div>

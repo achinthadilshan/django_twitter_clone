@@ -10,4 +10,7 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('update_user/', views.update_user, name='update_user'),
     path('tweet_like/<int:pk>', views.tweet_like, name='tweet_like'),
+    path('tweet_view/<int:pk>', views.tweet_view, name='tweet_view'),
+    path('unfollow/<int:pk>', views.unfollow, name='unfollow'),
+    path('follow/<int:pk>', views.follow, name='follow'),
 ]
