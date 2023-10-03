@@ -79,6 +79,10 @@
         {% endif %}
         <a href="{% url 'tweet_view' tweet.id %}" class="btn"
         >View</a>
+        {% if requset.user.username == tweet.profile.user.username %}
+        <a href="{% url 'delete_tweet' tweet.id %}" class="btn"
+        ><i class="bi bi-trash"></i></a>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
