@@ -82,6 +82,8 @@
         {% if requset.user.username == tweet.profile.user.username %}
         <a href="{% url 'delete_tweet' tweet.id %}" class="btn"
         ><i class="bi bi-trash"></i></a>
+        <a href="{% url 'edit_tweet' tweet.id %}" class="btn"
+        ><i class="bi bi-pencil-square"></i></a>
         {% endif %}
       </div>
     </div>
